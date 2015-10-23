@@ -1,0 +1,5 @@
+= musicarchive
+
+Generate this with
+    musicarchive rdoc
+After you have described your command line interface
