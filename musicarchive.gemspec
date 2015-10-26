@@ -22,4 +22,5 @@ spec = Gem::Specification.new do |s|
   s.add_runtime_dependency('gli','2.13.2')
   s.add_runtime_dependency('terminal-table','1.5.2')
   s.add_runtime_dependency('rest-client')
+  s.add_runtime_dependency('json')
 end
