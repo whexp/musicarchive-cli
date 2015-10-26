@@ -65,4 +65,36 @@ command :recent do |c|
   end
 end
 
+command :top_downloads do |c|
+  c.action do
+    response = $musicarchive['recent.json'].get
+    data = JSON::parse(response.body)
+    tracks = data['aTracks'].sort{|x,y| y['track_downloads'].to_i <=> x['track_downloads'].to_i}
+    table = Terminal::Table.new :headings=> ['Track ID','Artist','Title','Date Created','Downloads']
+    tracks.each do |track|
+      table.add_row [track['track_id'], track['artist_name'], track['track_title'], track['track_date_created'], track['track_downloads']]
+    end
+    puts table
+  end
+end
+
+command :top_artists do |c|
+  c.action do
+    response = $musicarchive['recent.json'].get
+    data = JSON::parse(response.body)
+    artists = data['aTracks']
+   artists_list ={}
+   artists.each{|a|
+       artists_list[a['artist_name']] ||=0
+       artists_list[a['artist_name']] +=a['track_downloads'].to_i
+   }
+    table = Terminal::Table.new :headings=> ['Artist','Downloads']
+    artists_list.sort_by{|k,v| v}.reverse.each do |(k,v)|
+        table.add_row [k, v]
+    end
+    puts table
+  end
+end
+
 exit run(ARGV)
+
